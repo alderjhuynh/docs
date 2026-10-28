@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LocalDocs</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285f4' d='M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z'/%3E%3Cpath fill='%23a1c2fa' d='M14 2l6 6h-6z'/%3E%3Cpath fill='%23fff' d='M7 12h10v1.5H7zm0 3h10v1.5H7zm0 3h6v1.5H7z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header id="top">
+  <div id="titlebar">
+    <button id="logo" class="logo" title="Docs home (Ctrl+O)"></button>
+    <div class="titlecol">
+      <div class="titlerow">
+        <input id="docTitle" type="text" spellcheck="false" placeholder="Untitled document" autocomplete="off">
+        <span id="saveState" title="Documents are stored in this browser (IndexedDB)"></span>
+      </div>
+      <nav id="menubar"></nav>
+    </div>
+    <div class="titleright">
+      <button id="themeBtn" class="tb round" title="Toggle dark theme"></button>
+      <button id="dlBtn" class="pill">Download</button>
+    </div>
+  </div>
+
+  <div id="toolbar">
+    <button class="tb" data-act="undo" data-i="undo" title="Undo (Ctrl+Z)"></button>
+    <button class="tb" data-act="redo" data-i="redo" title="Redo (Ctrl+Y)"></button>
+    <button class="tb" data-act="print" data-i="print" title="Print (Ctrl+P)"></button>
+    <span class="sep"></span>
+    <button class="tb dd w60" id="zoomBtn" title="Zoom">100%</button>
+    <span class="sep"></span>
+    <button class="tb dd w110" id="styleBtn" title="Styles">Normal text</button>
+    <span class="sep"></span>
+    <button class="tb dd w110" id="fontBtn" title="Font">Arial</button>
+    <span class="sep"></span>
+    <div class="sizebox">
+      <button class="tb sm" data-act="sizeDown" title="Decrease font size (Ctrl+Shift+,)">−</button>
+      <input id="sizeInput" type="text" value="11" title="Font size" autocomplete="off">
+      <button class="tb sm" data-act="sizeUp" title="Increase font size (Ctrl+Shift+.)">+</button>
+    </div>
+    <span class="sep"></span>
+    <button class="tb" data-act="bold" id="b-bold" title="Bold (Ctrl+B)"><b>B</b></button>
+    <button class="tb" data-act="italic" id="b-italic" title="Italic (Ctrl+I)"><i>I</i></button>
+    <button class="tb" data-act="underline" id="b-underline" title="Underline (Ctrl+U)"><u>U</u></button>
+    <button class="tb" data-act="textColor" id="b-color" title="Text color"><span class="ico" data-i="color"></span><span class="cbar" id="colorBar" style="background:#000"></span></button>
+    <button class="tb" data-act="highlight" id="b-hl" title="Highlight color"><span class="ico" data-i="highlight"></span><span class="cbar" id="hlBar" style="background:#ffff00"></span></button>
+    <span class="sep"></span>
+    <button class="tb" data-act="link" data-i="link" title="Insert link (Ctrl+K)"></button>
+    <button class="tb" data-act="image" data-i="image" title="Insert image"></button>
+    <span class="sep"></span>
+    <button class="tb" data-act="alignLeft" id="b-left" data-i="left" title="Left align (Ctrl+Shift+L)"></button>
+    <button class="tb" data-act="alignCenter" id="b-center" data-i="center" title="Center (Ctrl+Shift+E)"></button>
+    <button class="tb" data-act="alignRight" id="b-right" data-i="right" title="Right align (Ctrl+Shift+R)"></button>
+    <button class="tb" data-act="alignJustify" id="b-justify" data-i="justify" title="Justify (Ctrl+Shift+J)"></button>
+    <button class="tb" data-act="lineSpacing" data-i="spacing" title="Line &amp; paragraph spacing"></button>
+    <span class="sep"></span>
+    <button class="tb" data-act="checklist" id="b-check" data-i="check" title="Checklist"></button>
+    <button class="tb" data-act="bullets" id="b-ul" data-i="ul" title="Bulleted list (Ctrl+Shift+8)"></button>
+    <button class="tb" data-act="numbers" id="b-ol" data-i="ol" title="Numbered list (Ctrl+Shift+7)"></button>
+    <button class="tb" data-act="outdent" data-i="outdent" title="Decrease indent (Ctrl+[)"></button>
+    <button class="tb" data-act="indent" data-i="indent" title="Increase indent (Ctrl+])"></button>
+    <button class="tb" data-act="clearFormat" data-i="clear" title="Clear formatting (Ctrl+\)"></button>
+    <span class="sep"></span>
+    <button class="tb" data-act="toggleOutline" id="b-outline" data-i="outline" title="Show document outline"></button>
+  </div>
+</header>
+
+<div id="main">
+  <aside id="outline" class="hidden">
+    <div class="outline-head">Outline</div>
+    <div id="outlineList"><p class="muted">Headings you add to the document will appear here.</p></div>
+  </aside>
+  <div id="canvas">
+    <div id="pageWrap">
+      <div id="page" contenteditable="true" spellcheck="true"><p><br></p></div>
+    </div>
+  </div>
+</div>
+
+<div id="home" hidden>
+  <header id="homeTop">
+    <div class="home-brand"><span id="homeLogo"></span><span class="home-name">Docs</span></div>
+    <label id="homeSearch"><span class="ico"></span><input id="homeSearchIn" type="text" placeholder="Search" autocomplete="off" spellcheck="false"><button type="button" id="homeSearchClear" class="tb sm" title="Clear search" hidden>✕</button></label>
+    <div class="home-right">
+      <button id="homeTheme" class="tb round" title="Toggle dark theme"></button>
+      <button id="homeClose" class="pill small" hidden>Back to document</button>
+    </div>
+  </header>
+  <div id="homeScroll">
+    <section id="homeStart">
+      <div class="home-inner">
+        <div class="home-row"><h2>Start a new document</h2></div>
+        <div id="tplRow"></div>
+      </div>
+    </section>
+    <section id="homeRecent">
+      <div class="home-inner">
+        <div class="home-row">
+          <h2 id="recentTitle">Recent documents</h2>
+          <div class="home-tools">
+            <button id="sortBtn" class="home-sort" type="button"></button>
+            <button id="viewBtn" class="tb round" type="button"></button>
+            <button id="openFileBtn" class="tb round" type="button" title="Open file picker (import .docx, .md, .html, .txt)"></button>
+          </div>
+        </div>
+        <div id="docGrid"></div>
+        <div id="homeEmpty" hidden></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div id="wordbadge" title="Word count (Ctrl+Shift+C)"></div>
+<div id="imgBox" hidden><span class="h"></span></div>
+<div id="linkPop" hidden></div>
+<div id="popup"></div>
+<div id="toast"></div>
+
+<div id="findbar" hidden>
+  <div class="fr">
+    <input id="findIn" placeholder="Find in document" autocomplete="off">
+    <span id="findCount">0 of 0</span>
+    <button class="tb sm" id="findPrev" title="Previous (Shift+Enter)">▲</button>
+    <button class="tb sm" id="findNext" title="Next (Enter)">▼</button>
+    <button class="tb sm" id="findClose" title="Close (Esc)">✕</button>
+  </div>
+  <div class="fr">
+    <input id="replIn" placeholder="Replace with" autocomplete="off">
+    <button class="pill small" id="replOne">Replace</button>
+    <button class="pill small" id="replAll">All</button>
+  </div>
+  <label class="fcase"><input type="checkbox" id="findCase"> Match case</label>
+</div>
+
+<dialog id="dlg">
+  <form method="dialog" id="dlgForm">
+    <h2 id="dlgTitle"></h2>
+    <div id="dlgBody"></div>
+    <div id="dlgBtns"></div>
+  </form>
+</dialog>
+<input type="file" id="fileImg" accept="image/*" hidden>
+<input type="file" id="fileImport" accept=".docx,.md,.markdown,.txt,.html,.htm" hidden>
+
+<script src="vendor/docx.js"></script>
+<script src="vendor/turndown.js"></script>
+<script src="vendor/turndown-gfm.js"></script>
+<script src="vendor/mammoth.js"></script>
+<script src="vendor/marked.js"></script>
+<script src="export.js"></script>
+<script src="src/helpers.js"></script>
+<script src="src/icons.js"></script>
+<script src="src/state.js"></script>
+<script src="src/selection.js"></script>
+<script src="src/toolbar.js"></script>
+<script src="src/links.js"></script>
+<script src="src/images.js"></script>
+<script src="src/tables.js"></script>
+<script src="src/inserts.js"></script>
+<script src="src/page-setup.js"></script>
+<script src="src/dialogs.js"></script>
+<script src="src/menus.js"></script>
+<script src="src/actions.js"></script>
+<script src="src/menubar.js"></script>
+<script src="src/home.js"></script>
+<script src="src/find.js"></script>
+<script src="src/outline.js"></script>
+<script src="src/export-actions.js"></script>
+<script src="src/editing.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>
