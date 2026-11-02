@@ -10,10 +10,10 @@ function applyPageSetup() {
   let tag = $('#pagestyle'); if (!tag) { tag = el('style', { id: 'pagestyle' }); document.head.append(tag); }
   tag.textContent = `@page{size:${ps.orient === 'landscape' ? d[1] : d[0]}in ${ps.orient === 'landscape' ? d[0] : d[1]}in;margin:${ps.mt}in ${ps.mr}in ${ps.mb}in ${ps.ml}in}`;
   page.classList.toggle('guides', lsGet('ld_guides', '1') === '1');
-  positionImgBox();
+  positionImgBox(); layoutComments();
 }
 function setZoom(z) {
-  state.zoom = z; $('#pageWrap').style.zoom = z; $('#zoomBtn').textContent = Math.round(z * 100) + '%'; lsSet('ld_zoom', z); positionImgBox();
+  state.zoom = z; $('#pageWrap').style.zoom = z; $('#zoomBtn').textContent = Math.round(z * 100) + '%'; lsSet('ld_zoom', z); positionImgBox(); layoutComments();
 }
 function pageSetupDialog() {
   const ps = state.ps;

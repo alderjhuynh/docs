@@ -89,6 +89,6 @@ function clearFormatting() {
   restoreSelIfNeeded();
   cmd('removeFormat'); cmd('unlink');
   selectedBlocks().forEach(b => { b.removeAttribute('style'); });
-  $$('span,font', page).forEach(sp => { if (!sp.getAttribute('style') && sp.tagName === 'SPAN') { while (sp.firstChild) sp.before(sp.firstChild); sp.remove(); } });
+  $$('span,font', page).forEach(sp => { if (!sp.getAttribute('style') && sp.tagName === 'SPAN' && !sp.dataset.cid) { while (sp.firstChild) sp.before(sp.firstChild); sp.remove(); } });
   markDirty();
 }

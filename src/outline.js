@@ -1,5 +1,11 @@
 'use strict';
 
+function setSidebar(on, persist = true) {
+  $('#outline').classList.toggle('hidden', !on);
+  if (persist) lsSet('ld_outline', on ? '1' : '0');
+  $('#b-outline').classList.toggle('on', on);
+  refreshOutline(); positionImgBox();
+}
 let outlineT;
 function refreshOutline() {
   clearTimeout(outlineT); outlineT = setTimeout(() => {

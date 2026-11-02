@@ -10,7 +10,7 @@ function menusDef() {
   return {
     File: [
       { label: 'New document', shortcut: 'Alt+N', run: () => newDoc() }, { label: 'Open…', shortcut: 'Ctrl+O', run: () => showHome() },
-      { label: 'Make a copy', run: async () => { await save(); const id = await newDoc({ title: 'Copy of ' + (state.title || 'Untitled document'), html: page.innerHTML, ps: { ...state.ps } }); } },
+      { label: 'Make a copy', run: async () => { await save(); await newDoc({ title: 'Copy of ' + (state.title || 'Untitled document'), tabs: tabsForCopy(state.tabs), ps: { ...state.ps } }); } },
       { label: 'Import (.docx, .md, .html, .txt)…', run: importPicker }, '-',
       { label: 'Rename', run: () => { $('#docTitle').focus(); $('#docTitle').select(); } },
       { label: 'Download', submenu: dl }, '-',
@@ -26,7 +26,8 @@ function menusDef() {
       { label: 'Find and replace', shortcut: 'Ctrl+H', run: () => openFind(true) }
     ],
     View: [
-      { label: 'Show outline', checked: !$('#outline').classList.contains('hidden'), run: A.toggleOutline },
+      { label: 'Show tabs & outline', checked: !$('#outline').classList.contains('hidden'), run: A.toggleOutline },
+      { label: 'Show comments', checked: cmtOpen, run: () => setCmtOpen(!cmtOpen) },
       { label: 'Show page-break guides', checked: lsGet('ld_guides', '1') === '1', run: () => { lsSet('ld_guides', lsGet('ld_guides', '1') === '1' ? '0' : '1'); applyPageSetup(); } },
       { label: 'Dark theme', checked: document.body.classList.contains('dark'), run: toggleTheme },
       { label: 'Zoom', submenu: [0.5, 0.75, 1, 1.25, 1.5, 2].map(z => ({ label: Math.round(z * 100) + '%', checked: state.zoom === z, run: () => setZoom(z) })) },
@@ -34,6 +35,8 @@ function menusDef() {
     ],
     Insert: [
       { label: 'Image…', run: () => $('#fileImg').click() }, { label: 'Table', submenu: tableInsert }, '-',
+      { label: 'Comment', shortcut: 'Ctrl+Alt+M', run: commentStart },
+      { label: 'New tab', run: () => addTab() }, { label: 'New subtab', run: () => addTab(state.tab) }, '-',
       { label: 'Link', shortcut: 'Ctrl+K', run: () => openLinkDialog() }, { label: 'Horizontal line', run: insertHR }, { label: 'Page break', shortcut: 'Ctrl+Enter', run: insertPageBreak }, '-',
       { label: 'Checklist', run: toggleChecklist }, { label: 'Block quote', run: () => { cmd('formatBlock', '<blockquote>'); } },
       { label: 'Code block', run: () => { cmd('formatBlock', '<pre>'); } }, '-',
@@ -55,7 +58,8 @@ function menusDef() {
     ],
     Tools: [
       { label: 'Word count', shortcut: 'Ctrl+Shift+C', run: wordCountDialog }, { label: 'Find and replace', shortcut: 'Ctrl+H', run: () => openFind(true) },
-      { label: 'Spelling check', checked: page.spellcheck, run: () => { page.spellcheck = !page.spellcheck; page.blur(); page.focus(); } }, '-',
+      { label: 'Spelling check', checked: page.spellcheck, run: () => { page.spellcheck = !page.spellcheck; page.blur(); page.focus(); } },
+      { label: 'Comment author name…', run: authorDialog }, '-',
       { label: 'Keyboard shortcuts', run: shortcutsDialog }
     ]
   };

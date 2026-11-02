@@ -134,6 +134,7 @@ function normalizedClone(pageEl) {
   const orig = pageEl.querySelectorAll('td,th,table,img'), copy = c.querySelectorAll('td,th,table,img');
   orig.forEach((o, i) => { if (o.tagName === 'IMG') { copy[i].dataset.nw = o.naturalWidth; copy[i].dataset.nh = o.naturalHeight; copy[i].dataset.rw = o.getBoundingClientRect().width / (parseFloat(getComputedStyle(pageEl.parentElement).zoom) || 1); } else copy[i].dataset.w = o.offsetWidth; });
   c.querySelectorAll('.sel').forEach(x => x.classList.remove('sel'));
+  c.querySelectorAll('span[data-cid]').forEach(s => { while (s.firstChild) s.before(s.firstChild); s.remove(); });   // comment anchors
   c.querySelectorAll('ul > ul, ul > ol, ol > ul, ol > ol').forEach(l => {
     const prev = l.previousElementSibling;
     if (prev && prev.tagName === 'LI') prev.appendChild(l);

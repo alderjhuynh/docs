@@ -10,7 +10,8 @@ const A = {
   indent: () => cmd('indent'), outdent: () => cmd('outdent'), clearFormat: clearFormatting,
   link: () => openLinkDialog(), image: () => $('#fileImg').click(),
   sizeUp: () => stepSize(1), sizeDown: () => stepSize(-1),
-  toggleOutline: () => { const o = $('#outline'); o.classList.toggle('hidden'); lsSet('ld_outline', o.classList.contains('hidden') ? '0' : '1'); $('#b-outline').classList.toggle('on', !o.classList.contains('hidden')); refreshOutline(); positionImgBox(); }
+  toggleOutline: () => setSidebar($('#outline').classList.contains('hidden')),
+  comment: () => commentStart()
 };
 $('#toolbar').addEventListener('mousedown', e => { if (e.target.id !== 'sizeInput') e.preventDefault(); });
 $$('#toolbar [data-act]').forEach(b => b.addEventListener('click', e => {

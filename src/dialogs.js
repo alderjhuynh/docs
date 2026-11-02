@@ -23,7 +23,7 @@ function wordCountDialog() {
   dialog('Word count', t, [{ label: 'OK', primary: true }]);
 }
 function shortcutsDialog() {
-  const k = [['Bold / Italic / Underline', 'Ctrl+B / I / U'], ['Link', 'Ctrl+K'], ['Find / Replace', 'Ctrl+F / Ctrl+H'], ['Save now', 'Ctrl+S'], ['Print / PDF', 'Ctrl+P'],
+  const k = [['Bold / Italic / Underline', 'Ctrl+B / I / U'], ['Link', 'Ctrl+K'], ['Add comment', 'Ctrl+Alt+M'], ['Post comment or reply', 'Ctrl+Enter'], ['Find / Replace', 'Ctrl+F / Ctrl+H'], ['Save now', 'Ctrl+S'], ['Print / PDF', 'Ctrl+P'],
     ['Align L / C / R / Justify', 'Ctrl+Shift+L/E/R/J'], ['Numbered / bulleted list', 'Ctrl+Shift+7 / 8'], ['Heading 1–3 / Normal', 'Ctrl+Alt+1–3 / 0'],
     ['Indent / outdent', 'Tab / Shift+Tab, Ctrl+] / ['], ['Clear formatting', 'Ctrl+\\'], ['Font size ± ', 'Ctrl+Shift+. / ,'], ['Markdown while typing', '# , ## , - , 1. , [] , > + space']];
   const g = el('div', { className: 'kbd' }); k.forEach(([a, b]) => g.append(el('span', { textContent: a }), el('b', { textContent: b })));

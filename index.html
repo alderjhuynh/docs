@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LocalDocs</title>
+<title>Docs</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285f4' d='M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z'/%3E%3Cpath fill='%23a1c2fa' d='M14 2l6 6h-6z'/%3E%3Cpath fill='%23fff' d='M7 12h10v1.5H7zm0 3h10v1.5H7zm0 3h6v1.5H7z'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -20,6 +20,7 @@
       <nav id="menubar"></nav>
     </div>
     <div class="titleright">
+      <button id="cmtBtn" class="tb round" title="Show comments"></button><span id="cmtBadge" hidden></span>
       <button id="themeBtn" class="tb round" title="Toggle dark theme"></button>
       <button id="dlBtn" class="pill">Download</button>
     </div>
@@ -49,6 +50,7 @@
     <button class="tb" data-act="highlight" id="b-hl" title="Highlight color"><span class="ico" data-i="highlight"></span><span class="cbar" id="hlBar" style="background:#ffff00"></span></button>
     <span class="sep"></span>
     <button class="tb" data-act="link" data-i="link" title="Insert link (Ctrl+K)"></button>
+    <button class="tb" data-act="comment" data-i="commentAdd" title="Add comment (Ctrl+Alt+M)"></button>
     <button class="tb" data-act="image" data-i="image" title="Insert image"></button>
     <span class="sep"></span>
     <button class="tb" data-act="alignLeft" id="b-left" data-i="left" title="Left align (Ctrl+Shift+L)"></button>
@@ -64,19 +66,29 @@
     <button class="tb" data-act="indent" data-i="indent" title="Increase indent (Ctrl+])"></button>
     <button class="tb" data-act="clearFormat" data-i="clear" title="Clear formatting (Ctrl+\)"></button>
     <span class="sep"></span>
-    <button class="tb" data-act="toggleOutline" id="b-outline" data-i="outline" title="Show document outline"></button>
+    <button class="tb" data-act="toggleOutline" id="b-outline" data-i="outline" title="Show tabs &amp; outline"></button>
   </div>
 </header>
 
 <div id="main">
   <aside id="outline" class="hidden">
+    <div class="outline-head side-head"><span>Document tabs</span><button id="tabAdd" class="tb sm" type="button" title="Add tab"></button></div>
+    <div id="tabList" role="tree" aria-label="Document tabs"></div>
     <div class="outline-head">Outline</div>
     <div id="outlineList"><p class="muted">Headings you add to the document will appear here.</p></div>
   </aside>
   <div id="canvas">
+    <div id="cmtBarWrap" hidden>
+      <div id="cmtBar">
+        <span class="cmt-title">Comments</span>
+        <span id="cmtSeg"><button type="button" data-v="open">Open</button><button type="button" data-v="resolved">Resolved</button></span>
+        <button id="cmtClose" class="tb sm" type="button" title="Close comments"></button>
+      </div>
+    </div>
     <div id="pageWrap">
       <div id="page" contenteditable="true" spellcheck="true"><p><br></p></div>
     </div>
+    <div id="cmtRail" hidden></div>
   </div>
 </div>
 
@@ -114,6 +126,7 @@
 </div>
 
 <div id="wordbadge" title="Word count (Ctrl+Shift+C)"></div>
+<button id="cmtFab" type="button" title="Add comment (Ctrl+Alt+M)" hidden></button>
 <div id="imgBox" hidden><span class="h"></span></div>
 <div id="linkPop" hidden></div>
 <div id="popup"></div>
@@ -168,6 +181,8 @@
 <script src="src/home.js"></script>
 <script src="src/find.js"></script>
 <script src="src/outline.js"></script>
+<script src="src/tabs.js"></script>
+<script src="src/comments.js"></script>
 <script src="src/export-actions.js"></script>
 <script src="src/editing.js"></script>
 <script src="src/main.js"></script>

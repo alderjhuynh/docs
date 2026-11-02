@@ -56,7 +56,7 @@ function renderTemplates() {
 
 async function renderHome() {
   const docs = await DB.all();
-  docs.forEach(d => d._text = plainText(d.html));
+  docs.forEach(d => d._text = plainText(docAllHTML(d)));
   const q = homeUI.q.trim().toLowerCase();
   let list = q ? docs.filter(d => untitled(d).toLowerCase().includes(q) || d._text.includes(q)) : docs.slice();
   const s = homeUI.sort;
@@ -74,7 +74,7 @@ async function renderHome() {
   list.forEach(d => {
     const more = el('button', { type: 'button', className: 'more', title: 'More actions', textContent: '⋮' });
     const card = el('div', { className: 'dcard' + (d.id === state.id ? ' current' : ''), tabIndex: 0, role: 'button', title: untitled(d) },
-      thumb(d.html),
+      thumb(docTabs(d)[0].html),
       el('div', { className: 'meta' }, (() => { const t = document.createElement('div'); t.innerHTML = DOC_ICON; return t.firstChild; })(),
         el('div', { className: 'nm', textContent: untitled(d) }),
         el('div', { className: 'dt m', textContent: (homeUI.view === 'list' ? '' : 'Modified ') + fmtDate(d.modified) }),
@@ -98,7 +98,7 @@ async function renderHome() {
 const docActions = d => [
   { label: 'Open', run: () => loadDoc(d.id).then(ok => ok && page.focus()) }, '-',
   { label: 'Rename', run: () => renameDialog(d) },
-  { label: 'Make a copy', run: async () => { const now = Date.now(); await DB.put({ id: uid(), title: 'Copy of ' + untitled(d), html: d.html, ps: d.ps, created: now, modified: now }); toast('Copy created'); renderHome(); } }, '-',
+  { label: 'Make a copy', run: async () => { const now = Date.now(); await DB.put({ id: uid(), title: 'Copy of ' + untitled(d), tabs: tabsForCopy(docTabs(d)), comments: [], ps: d.ps, created: now, modified: now }); toast('Copy created'); renderHome(); } }, '-',
   { label: 'Remove', run: () => removeDoc(d) }
 ];
 function renameDialog(d) {
@@ -113,7 +113,7 @@ function renameDialog(d) {
 async function removeDoc(d) {
   if (!confirm('Delete "' + untitled(d) + '" permanently?')) return;
   await DB.del(d.id);
-  if (d.id === state.id) { clearTimeout(saveTimer); dirty = false; state.id = null; page.innerHTML = '<p><br></p>'; $('#docTitle').value = ''; lsSet('ld_current', ''); history.replaceState(null, '', location.pathname + location.search); $('#homeClose').hidden = true; }
+  if (d.id === state.id) { clearTimeout(saveTimer); dirty = false; state.id = null; state.tabs = []; state.tab = null; state.comments = []; page.innerHTML = '<p><br></p>'; $('#docTitle').value = ''; lsSet('ld_current', ''); history.replaceState(null, '', location.pathname + location.search); $('#homeClose').hidden = true; }
   toast('Document removed'); renderHome();
 }
 async function showHome() {
@@ -121,9 +121,9 @@ async function showHome() {
   closePopups(); $('#linkPop').hidden = true; $('#findbar').hidden = true;
   homeUI.q = ''; $('#homeSearchIn').value = '';
   $('#homeClose').hidden = !state.id; $('#homeTheme').innerHTML = svg(document.body.classList.contains('dark') ? ICONS.sun : ICONS.moon);
-  home.hidden = false; renderTemplates(); await renderHome(); $('#homeScroll').scrollTop = 0; document.title = 'Docs – LocalDocs';
+  home.hidden = false; renderTemplates(); await renderHome(); $('#homeScroll').scrollTop = 0; document.title = 'Docs';
 }
-function hideHome() { if (home.hidden) return; home.hidden = true; document.title = (state.title || 'Untitled document') + ' – LocalDocs'; }
+function hideHome() { if (home.hidden) return; home.hidden = true; document.title = (state.title || 'Untitled document') + ' - Docs'; }
 const docsDialog = showHome;
 
 $('#homeSearchIn').addEventListener('input', e => { homeUI.q = e.target.value; renderHome(); });

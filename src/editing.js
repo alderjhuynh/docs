@@ -68,8 +68,9 @@ page.addEventListener('keydown', e => {
     const map = { l: A.alignLeft, e: A.alignCenter, r: A.alignRight, j: A.alignJustify, c: wordCountDialog, '7': A.numbers, '&': A.numbers, '8': A.bullets, '*': A.bullets, '9': toggleChecklist, '(': toggleChecklist, '>': A.sizeUp, '.': A.sizeUp, '<': A.sizeDown, ',': A.sizeDown, x: A.strike };
     const f = map[k.toLowerCase()]; if (f) { e.preventDefault(); f(); return; }
   }
+  if (mod && e.altKey && e.code === 'KeyM') { e.preventDefault(); commentStart(); return; }
   if (mod && e.altKey) {
-    const m = { '0': 'p', '1': 'h1', '2': 'h2', '3': 'h3', '4': 'h4', '5': 'h5', '6': 'h6' }[e.code.replace('Digit', '')]; if (m) { e.preventDefault(); setBlockStyle(m); }
+    const m ={ '0': 'p', '1': 'h1', '2': 'h2', '3': 'h3', '4': 'h4', '5': 'h5', '6': 'h6' }[e.code.replace('Digit', '')]; if (m) { e.preventDefault(); setBlockStyle(m); }
   }
 });
 document.addEventListener('keydown', e => {
@@ -83,7 +84,7 @@ document.addEventListener('keydown', e => {
 });
 canvas.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); setZoom(Math.min(2, Math.max(.5, +(state.zoom + (e.deltaY < 0 ? .1 : -.1)).toFixed(2)))); }, { passive: false });
 
-$('#docTitle').addEventListener('input', e => { state.title = e.target.value; document.title = (state.title || 'Untitled document') + ' – LocalDocs'; markDirty(); });
+$('#docTitle').addEventListener('input', e => { state.title = e.target.value; document.title = (state.title || 'Untitled document') + '- Docs'; markDirty(); });
 $('#docTitle').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); page.focus(); } });
 $('#themeBtn').onclick = toggleTheme;
 window.addEventListener('resize', positionImgBox);
