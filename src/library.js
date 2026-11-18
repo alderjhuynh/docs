@@ -1,8 +1,5 @@
 import { DurableObject } from "cloudflare:workers";
 
-// Each doc is stored as an opaque JSON string, split into ~500k-char chunks so
-// no single SQLite row gets anywhere near the 8 MB row limit. The server never
-// parses doc bodies (keeps CPU low); metadata arrives separately from the client.
 const CHUNK = 500_000;
 
 export class Library extends DurableObject {
@@ -62,7 +59,6 @@ export class Library extends DurableObject {
     return { ok: true, modified, size: body.length, parts };
   }
 
-  // Tombstone, so a doc deleted in the cloud isn't resurrected by the next push.
   async remove(id) {
     const now = Date.now();
     this.ctx.storage.transactionSync(() => {

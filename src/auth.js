@@ -1,6 +1,5 @@
 const enc = new TextEncoder();
 
-// Constant-time string comparison (compares SHA-256 digests).
 export async function safeEqual(a, b) {
   const [ha, hb] = await Promise.all([
     crypto.subtle.digest("SHA-256", enc.encode(a)),

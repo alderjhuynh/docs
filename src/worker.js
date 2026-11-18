@@ -21,8 +21,6 @@ export default {
     try {
       if (!pathname.startsWith("/api/docs")) return json({ error: "not_found" }, 404);
 
-      // Owner-only: Authorization: Bearer <ADMIN_TOKEN>. Fails closed if the secret isn't set.
-      // A header (not a cookie) means other sites can't trigger these requests, so no CSRF handling is needed.
       const given = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
       if (!env.ADMIN_TOKEN || !given || !(await safeEqual(given, env.ADMIN_TOKEN))) {
         return json({ error: "unauthorized" }, 401);
@@ -45,8 +43,6 @@ export default {
       }
 
       if (request.method === "PUT") {
-        // The body is stored as an opaque string and never parsed here (keeps CPU low);
-        // metadata comes in headers.
         const modified = num(request.headers.get("X-Doc-Modified"));
         const created = num(request.headers.get("X-Doc-Created")) ?? 0;
         if (modified === null) return json({ error: "bad_modified" }, 400);
