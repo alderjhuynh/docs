@@ -3,7 +3,7 @@
 const cloud = (() => {
   const TOKEN_KEY = 'ld_cloud_token';
   let token = lsGet(TOKEN_KEY, '');
-  const log = (...a) => console.log('%c[cloud]', 'color:#1a73e8;font-weight:bold', ...a);
+  const log = (...a) => { console.log('%c[cloud]', 'color:#1a73e8;font-weight:bold', ...a); try { if (window.__cloudLog) window.__cloudLog(...a); } catch (_) { } };
 
   async function api(path, { method = 'GET', headers, body } = {}) {
     if (!token) throw new Error("No token. Run cloud.login('<your ADMIN_TOKEN>')");
@@ -115,5 +115,5 @@ const cloud = (() => {
     })();
   }
 
-  return { login, logout, status, push, pull, remove };
+  return { login, logout, status, push, pull, remove, getToken: () => token };
 })();
