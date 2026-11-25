@@ -11,17 +11,17 @@ function buildMenu(items, parent) {
       el('span', { className: 'lab', textContent: it.label }), it.shortcut ? el('span', { className: 'sc', textContent: it.shortcut }) : '');
     if (it.style) row.querySelector('.lab').setAttribute('style', it.style);
     let sub = null;
-    row.addEventListener('mouseenter', () => {
-      $$(':scope > .menu', parent || popup).forEach(x => { if (x !== m && x.dataset.owner !== undefined) { } });
+    const openSub = () => {
       popup.querySelectorAll('.menu[data-depth]').forEach(x => { if (+x.dataset.depth > +(m.dataset.depth || 0)) x.remove(); });
-      if (it.submenu) {
-        sub = buildMenu(typeof it.submenu === 'function' ? it.submenu() : it.submenu, popup); sub.dataset.depth = (+(m.dataset.depth || 0) + 1);
-        popup.append(sub); const r = row.getBoundingClientRect();
-        let left = r.right - 4; if (left + sub.offsetWidth > innerWidth) left = r.left - sub.offsetWidth + 4;
-        sub.style.left = left + 'px'; sub.style.top = Math.min(r.top - 6, innerHeight - sub.offsetHeight - 8) + 'px';
-      }
-    });
-    if (!it.submenu) row.addEventListener('click', e => { closePopups(); it.run && it.run(e); });
+      if (!it.submenu || (sub && sub.isConnected)) return;
+      sub = buildMenu(typeof it.submenu === 'function' ? it.submenu() : it.submenu, popup); sub.dataset.depth = (+(m.dataset.depth || 0) + 1);
+      popup.append(sub); const r = row.getBoundingClientRect();
+      let left = r.right - 4; if (left + sub.offsetWidth > innerWidth - 6) left = Math.max(6, r.left - sub.offsetWidth + 4);
+      sub.style.left = left + 'px'; sub.style.top = Math.max(6, Math.min(r.top - 6, innerHeight - sub.offsetHeight - 8)) + 'px';
+    };
+    row.addEventListener('mouseenter', openSub);
+    if (it.submenu) row.addEventListener('click', e => { e.stopPropagation(); openSub(); });
+    else row.addEventListener('click', e => { closePopups(); it.run && it.run(e); });
     m.append(row);
   });
   return m;

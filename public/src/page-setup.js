@@ -11,7 +11,30 @@ function applyPageSetup() {
   tag.textContent = `@page{size:${ps.orient === 'landscape' ? d[1] : d[0]}in ${ps.orient === 'landscape' ? d[0] : d[1]}in;margin:${ps.mt}in ${ps.mr}in ${ps.mb}in ${ps.ml}in}`;
   page.classList.toggle('guides', lsGet('ld_guides', '1') === '1');
   positionImgBox(); layoutComments();
+  fitPageToWidth();
 }
+
+let autoFit = false;
+const narrowView = () => window.matchMedia('(max-width:720px)').matches;
+function fitPageToWidth() {
+  if (!narrowView()) {
+    if (autoFit) { autoFit = false; setZoom(parseFloat(lsGet('ld_zoom', '1')) || 1); }
+    return false;
+  }
+  const w = parseFloat(page.style.width) || page.offsetWidth || 816;
+  const avail = Math.max(200, canvas.clientWidth - 16);
+  const z = Math.max(.25, Math.min(1, Math.floor((avail / w) * 100) / 100));
+  autoFit = true;
+  state.zoom = z;
+  $('#pageWrap').style.zoom = z;
+  $('#zoomBtn').textContent = Math.round(z * 100) + '%';
+  positionImgBox(); layoutComments();
+  return true;
+}
+
+let fitT;
+window.addEventListener('resize', () => { clearTimeout(fitT); fitT = setTimeout(fitPageToWidth, 120); });
+
 function setZoom(z) {
   state.zoom = z; $('#pageWrap').style.zoom = z; $('#zoomBtn').textContent = Math.round(z * 100) + '%'; lsSet('ld_zoom', z); positionImgBox(); layoutComments();
 }

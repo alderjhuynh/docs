@@ -252,6 +252,10 @@ body.dark #dlgBtns button.primary{color:#062e6f}
   #docGrid.list .more{grid-column:3}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.mobile-only{display:none}
+#dlBtn{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.dl-ico{display:none}
+.dl-ico svg{width:20px;height:20px;fill:currentColor}
 
 .cloud-panel{position:fixed;right:16px;bottom:16px;z-index:60;width:min(94vw,400px);max-height:min(720px,calc(100vh - 32px));
   display:flex;flex-direction:column;overflow:hidden;background:var(--panel);color:var(--text);border:1px solid var(--line);
@@ -371,6 +375,7 @@ body.dark .cloud-check{color:#81c995}
 
 .side-head{display:flex;align-items:center;justify-content:space-between}
 .side-head .tb{margin:-4px 0 -4px 0}
+.side-actions{display:flex;align-items:center;gap:2px}
 #tabList{margin:0 0 18px -8px}
 .trow{display:flex;align-items:center;gap:4px;min-height:32px;padding-right:2px;border-radius:16px;cursor:pointer;user-select:none;position:relative}
 .trow:hover{background:var(--hover)}
@@ -450,6 +455,56 @@ body.dark .cbtn.primary{color:#062e6f}
   display:flex;align-items:center;justify-content:center}
 #cmtFab svg{width:20px;height:20px;fill:currentColor}
 #cmtFab:hover{background:var(--active)}
+
+@media (max-width:720px){
+  .mobile-only{display:inline-flex!important}
+  #titlebar{padding:4px 8px 0;gap:4px;align-items:center}
+  .logo{width:34px;height:34px;padding:4px;margin-top:0}
+  .titlerow{height:34px;gap:4px}
+  #docTitle{width:100%;max-width:none;height:32px;padding:0 6px;font-size:17px}
+  #saveState{display:none}
+  .titleright{gap:2px;margin-top:0}
+  .titleright .tb.round{width:34px!important;min-width:34px!important;height:34px!important}
+  #themeBtn{display:none!important}
+  #dlBtn{width:34px!important;height:34px!important;padding:0!important;border-radius:50%!important}
+  #dlBtn .dl-lbl{display:none}
+  #dlBtn .dl-ico{display:inline-flex}
+  #menubar{height:26px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+  #menubar::-webkit-scrollbar{display:none}
+  #menubar button:not(.mobile-only){display:none!important}
+  #menubar #mobileMenuBtn{display:inline-flex!important;align-items:center;padding:0 10px;font-weight:500}
+  #toolbar{margin:2px 8px 4px;height:38px;padding:0 4px;border-radius:19px}
+  #toolbar .tb{min-width:32px;height:32px}
+  #canvas{padding:8px 8px 64px}
+  #outline{position:fixed;left:0;top:0;bottom:0;z-index:35;width:min(86vw,320px);padding:16px 12px;
+    background:var(--panel);box-shadow:0 0 0 100vmax rgba(0,0,0,.28),var(--shadow)}
+  #outline .outline-head{font-size:16px}
+  #canvas.cmts-open{padding-right:8px}
+  #cmtBarWrap{position:fixed;left:8px;right:8px;bottom:64px;top:auto;height:auto;z-index:26}
+  #cmtBar{position:static;width:auto;height:42px;right:auto;border-radius:21px}
+  #cmtRail{position:fixed;left:8px;right:8px;bottom:114px;top:auto;width:auto;height:auto!important;max-height:46vh;
+    overflow:auto;z-index:25;padding:6px;background:var(--panel);border-radius:12px;box-shadow:var(--shadow)}
+  #cmtRail.list{padding:6px}
+  #cmtRail .ccard{position:relative;top:auto!important;left:auto;right:auto;margin:0 0 8px}
+  #findbar{left:8px;right:8px;top:auto;bottom:8px;width:auto;z-index:24}
+  dialog{min-width:0;width:calc(100vw - 16px);max-width:calc(100vw - 16px);max-height:calc(100vh - 24px);border-radius:14px}
+  #dlgForm{max-height:calc(100vh - 24px);overflow:auto;padding:16px 16px 12px}
+  .doclist{min-width:0}
+  #homeTop{height:56px;padding:0 8px;gap:8px}
+  #homeLogo svg{width:32px;height:32px}
+  #homeSearch{height:42px;padding:0 4px 0 12px;min-width:0}
+  #homeSearchIn{font-size:15px}
+  .home-right{gap:2px}
+  #homeTheme,#cloudOpenBtn{width:34px!important;height:34px!important}
+  #homeClose{height:32px;padding:0 12px;font-size:13px}
+  .home-inner{padding:0 14px}
+  #homeStart{padding:12px 0 16px}
+  .tpl{width:136px}
+  .tpl .pv{width:136px;height:176px}
+  .tpl .pv .tpage{transform:scale(.16667)}
+  #docGrid{grid-template-columns:repeat(auto-fill,196px);justify-content:center;gap:16px 12px}
+  #homeRecent{padding:8px 0 48px}
+}
 
 @media print{
   html,body{height:auto!important;overflow:visible!important;background:#fff!important;display:block!important}

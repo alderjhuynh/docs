@@ -17,12 +17,12 @@
         <input id="docTitle" type="text" spellcheck="false" placeholder="Untitled document" autocomplete="off">
         <span id="saveState" title="Documents are stored in this browser (IndexedDB)"></span>
       </div>
-      <nav id="menubar"></nav>
+      <nav id="menubar"><button id="mobileMenuBtn" class="mobile-only" type="button">Menu</button></nav>
     </div>
     <div class="titleright">
       <button id="cmtBtn" class="tb round" title="Show comments"></button><span id="cmtBadge" hidden></span>
       <button id="themeBtn" class="tb round" title="Toggle dark theme"></button>
-      <button id="dlBtn" class="pill">Download</button>
+      <button id="dlBtn" class="pill" title="Download" aria-label="Download"><span class="dl-lbl">Download</span><span class="dl-ico" data-i="download"></span></button>
     </div>
   </div>
 
@@ -72,7 +72,7 @@
 
 <div id="main">
   <aside id="outline" class="hidden">
-    <div class="outline-head side-head"><span>Document tabs</span><button id="tabAdd" class="tb sm" type="button" title="Add tab"></button></div>
+    <div class="outline-head side-head"><span>Document tabs</span><span class="side-actions"><button id="tabAdd" class="tb sm" type="button" title="Add tab"></button><button id="outlineClose" class="tb sm mobile-only" type="button" title="Close outline">✕</button></span></div>
     <div id="tabList" role="tree" aria-label="Document tabs"></div>
     <div class="outline-head">Outline</div>
     <div id="outlineList"><p class="muted">Headings you add to the document will appear here.</p></div>

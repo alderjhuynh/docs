@@ -28,3 +28,12 @@ function updateCounts() {
   }, 200);
 }
 $('#wordbadge').onclick = wordCountDialog;
+const outlineClose = $('#outlineClose');
+if (outlineClose) outlineClose.onclick = () => setSidebar(false);
+
+document.addEventListener('pointerdown', e => {
+  if (!window.matchMedia('(max-width:720px)').matches) return;
+  if ($('#outline').classList.contains('hidden')) return;
+  if (e.target.closest('#outline') || e.target.closest('#b-outline')) return;
+  if (e.target.closest('#canvas')) setSidebar(false);
+});

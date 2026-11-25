@@ -74,3 +74,14 @@ const mb = $('#menubar');
 });
 $('#dlBtn').addEventListener('click', e => menuBelow(e.currentTarget, menusDef().File[6].submenu));
 $('#logo').addEventListener('click', () => showHome());
+
+const mobileMenuBtn = $('#mobileMenuBtn');
+if (mobileMenuBtn) {
+  mobileMenuBtn.addEventListener('mousedown', e => e.preventDefault());
+  mobileMenuBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const defs = menusDef();
+    const r = mobileMenuBtn.getBoundingClientRect();
+    showMenu(Object.keys(defs).map(name => ({ label: name, submenu: defs[name] })), r.left, r.bottom + 2);
+  });
+}
