@@ -385,6 +385,7 @@ const cloudUI = (() => {
       ui.loginBtn,
       ui.error
     );
+    ui.signin = signin;
 
     ui.stateIcon = el('span', { className: 'cloud-stateicon' });
     ui.stateTitle = el('div', { className: 'cloud-statetitle' });
@@ -438,6 +439,7 @@ const cloudUI = (() => {
       activity,
       foot
     );
+    ui.account = account;
 
     const body = el('div', { className: 'cloud-body' }, signin, account);
     p.append(head, body);
